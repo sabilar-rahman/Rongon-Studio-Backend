@@ -48,14 +48,16 @@ datasource db {
 // }
 
 model Batch {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   batchNumber String
   session     String
+  students    Student[]
 }
 
-model trade {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+model Trade {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  student Student[]
 }
 
 model Student {
@@ -74,6 +76,10 @@ model Student {
   religion           String?
   presentAddress     Address[]
   educationResult    EducationResult[]
+  trade              Trade?            @relation(fields: [tradeId], references: [id])
+  tradeId            String?           @db.ObjectId
+  Batch              Batch?            @relation(fields: [batchId], references: [id])
+  batchId            String?           @db.ObjectId
 }
 
 model Address {

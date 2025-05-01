@@ -1,5 +1,3 @@
-
-
 import { Router } from "express";
 import { createStudentController, deleteStudentByIdController, getAllStudentsController, getStudentByIdController, updateStudentByIdController } from "./student.controller";
 import validateObjectId from "../../middleware/validateObjectId";
