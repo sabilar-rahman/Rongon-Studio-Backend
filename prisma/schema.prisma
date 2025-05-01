@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model Post {
+//   id       String    @id @default(auto()) @map("_id") @db.ObjectId
+//   slug     String    @unique
+//   title    String
+//   body     String
+//   author   User      @relation(fields: [authorId], references: [id])
+//   authorId String    @db.ObjectId
+//   comments Comment[]
+// }
+
+// model User {
+//   id      String   @id @default(auto()) @map("_id") @db.ObjectId
+//   email   String   @unique
+//   name    String?
+//   address Address?
+//   posts   Post[]
+// }
+
+// model Comment {
+//   id      String @id @default(auto()) @map("_id") @db.ObjectId
+//   comment String
+//   post    Post   @relation(fields: [postId], references: [id])
+//   postId  String @db.ObjectId
+// }
+
+// // Address is an embedded document
+// type Address {
+//   street String
+//   city   String
+//   state  String
+//   zip    String
+// }
+
+model Batch {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  batchNumber String
+  session     String
+}
+
+model trade {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+}
+
+model Student {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  fatherName         String
+  motherName         String
+  bloodGroup         String
+  gender             String
+  phoneNumber        String            @unique
+  parentsPhoneNumber String
+  email              String?
+  nidNumber          String            @unique
+  birthRegNumber     String?           @unique
+  dob                String?
+  religion           String?
+  presentAddress     Address[]
+  educationResult    EducationResult[]
+}
+
+model Address {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  village    String
+  postOffice String
+  wardNo     String
+  thana      String
+  district   String
+  division   String
+  Student    Student? @relation(fields: [studentId], references: [id])
+  studentId  String?  @db.ObjectId
+}
+
+model EducationResult {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  type           String
+  subjectName    String?
+  gpa            String?
+  rollNumber     String?
+  registerNumber String?
+  passedYear     String?
+  board          String?
+
+  Student   Student? @relation(fields: [studentId], references: [id])
+  studentId String?  @db.ObjectId
+}
